@@ -1,17 +1,17 @@
 package main
 
 import (
-	"bufio";
-	"fmt";
-	"os";
-	"strings";
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
 )
 
 func cleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
 }
 
-func startRepl() {
+func startRepl(cfg *Config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Welcome to the Pokedex!")
 
@@ -28,7 +28,7 @@ func startRepl() {
 		command, exists := getCommands()[commandName]
 
 		if exists {
-			if err := command.callback(); err != nil {
+			if err := command.callback(cfg); err != nil {
 				fmt.Println(err)
 			}
 		} else {
