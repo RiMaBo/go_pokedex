@@ -13,6 +13,7 @@ func cleanInput(text string) []string {
 
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("Welcome to the Pokedex!")
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -23,6 +24,15 @@ func startRepl() {
 			continue
 		}
 
-		fmt.Println("Your command was:", input[0])
+		commandName := input[0]
+		command, exists := getCommands()[commandName]
+
+		if exists {
+			if err := command.callback(); err != nil {
+				fmt.Println(err)
+			}
+		} else {
+			fmt.Printf("Unknown command: '%s'. Type 'help' or a list of commands.\n", commandName)
+		}
 	}
 }
