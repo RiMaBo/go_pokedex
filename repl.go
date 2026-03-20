@@ -1,11 +1,19 @@
 package main
 
 import (
+	"internal/pokeapi"
+
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
 )
+
+type Config struct {
+	pokeApiClient    pokeapi.Client
+	nextLocationsURL *string
+	prevLocationsURL *string
+}
 
 func cleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))

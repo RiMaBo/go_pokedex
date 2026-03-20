@@ -1,12 +1,9 @@
 package main
 
-import (
-	"internal/pokeapi"
-	"fmt"
-)
+import "fmt"
 
 func commandMapForward(cfg *Config) error {
-	locations, err := pokeapi.FetchLocations(cfg.nextLocationsURL);
+	locations, err := cfg.pokeApiClient.FetchLocations(cfg.nextLocationsURL);
 	if err != nil {
 		return err
 	}
@@ -26,7 +23,7 @@ func commandMapBack(cfg *Config) error {
 		return fmt.Errorf("You're on the first page")
 	}
 
-	locations, err := pokeapi.FetchLocations(cfg.prevLocationsURL);
+	locations, err := cfg.pokeApiClient.FetchLocations(cfg.prevLocationsURL);
 	if err != nil {
 		return err
 	}

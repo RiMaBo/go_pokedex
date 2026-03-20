@@ -1,11 +1,9 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func commandHelp(cfg *Config) error {
-	fmt.Println("\nUsage:\n")
+	fmt.Println("\nUsage:")
 	for _, cmd := range getCommands() {
 		fmt.Printf("%s: %s\n", cmd.name, cmd.description)
 	}

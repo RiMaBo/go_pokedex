@@ -1,41 +1,52 @@
 package pokeapi
 
 import (
-	"net/http"
 	"encoding/json"
-	"time"
+	"io"
+	"net/http"
 )
 
 const (
-	baseURL = "https://pokeapi.co/api/v2"
-	timeout = 5 * time.Second
+	baseUrl = "https://pokeapi.co/api/v2"
 )
 
-func FetchLocations(url *string) (ShallowLocations, error) {
-	pageUrl := baseURL + "/location-area/"
-	if url != nil {
-		pageUrl = *url
+func (c *Client) FetchLocations(pageUrl *string) (ShallowLocations, error) {
+	fullUrl := baseUrl + "/location-area/"
+	if pageUrl != nil {
+		fullUrl = *pageUrl
 	}
 
-	req, err := http.NewRequest("GET", pageUrl, nil)
+	if cached, ok := c.cache.Get(fullUrl); ok {
+		var locations ShallowLocations
+		if err := json.Unmarshal(cached, &locations); err != nil {
+			return ShallowLocations{}, err
+		}
+
+		return locations, nil
+	}
+
+	req, err := http.NewRequest("GET", fullUrl, nil)
 	if err != nil {
 		return ShallowLocations{}, err
 	}
 
-	client := http.Client{
-		Timeout: timeout,
-	}
-	res, err := client.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return ShallowLocations{}, err
 	}
 	defer res.Body.Close()
 
-	var locations ShallowLocations
-	if err := json.NewDecoder(res.Body).Decode(&locations); err != nil {
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
 		return ShallowLocations{}, err
 	}
 
+	var locations ShallowLocations
+	if err := json.Unmarshal(data, &locations); err != nil {
+		return ShallowLocations{}, err
+	}
+
+	c.cache.Add(fullUrl, data)
 	return locations, nil
 }
 
