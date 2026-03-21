@@ -3,7 +3,7 @@ package main
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config) error
+	callback    func(*Config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -15,13 +15,18 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			name:        "map",
-			description: "Display the names of the next page of location areas in the Pokemon world.",
+			description: "Display the next page of location areas",
 			callback:    commandMapForward,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "Display the names of the previous page of location areas in the Pokemon world.",
+			description: "Display the previous page of location areas",
 			callback:    commandMapBack,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a location",
+			callback:    commandExplore,
 		},
 		"exit": {
 			name:        "exit",

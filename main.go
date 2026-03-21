@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	httpTimeout := 5 * time.Second
+	httpTimeout := 10 * time.Second
 	cacheInterval := 5 * time.Minute
 	pokeClient := pokeapi.NewClient(httpTimeout, cacheInterval)
 	cfg := &Config{
