@@ -25,6 +25,7 @@ func commandCatch(cfg *Config, args ...string) error {
 	caught := math.Min(r.Float64() * baseExperience, r.Float64() * baseExperience);
 	if (caught > baseExperience / 2) {
 		fmt.Printf("%s was caught!\n", pokemon)
+		fmt.Println("You may now inspect it with the inspect command.")
 		cfg.pokedex[pokemon] = pokemonDetails
 	} else {
 		fmt.Printf("%s escaped!\n", pokemon)

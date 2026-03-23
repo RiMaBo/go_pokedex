@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func commandInspect(cfg *Config, args ...string) error {
 	if len(args) < 1 {
